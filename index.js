@@ -45,6 +45,10 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+app.get("/", async (req, res) => {
+  res.send("Hi ,I'm live");
+});
+
 app.post("/summarize", async (req, res) => {
   const videoURL = req.body.url;
   if (!videoURL) {
