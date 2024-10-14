@@ -11,7 +11,8 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
+console.log(`Starting server on port: ${PORT}`);
 
 // Initialize Hugging Face Inference with your API token from the .env file
 const hf = new HfInference(process.env.HUGGING_FACE_API_TOKEN);
@@ -113,6 +114,10 @@ app.post("/summarize", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+try {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+} catch (error) {
+  console.error("Error starting the server:", error);
+}
