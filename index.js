@@ -1,5 +1,3 @@
-// index.js
-
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -32,7 +30,7 @@ function extractVideoID(url) {
 }
 
 // Function to split transcript into chunks within model input size limitations
-function splitTranscript(transcript, maxTokens = 300) {
+function splitTranscript(transcript, maxTokens = 200) {  // Reduce chunk size to 200 words
   const words = transcript.split(" ");
   const chunks = [];
   for (let i = 0; i < words.length; i += maxTokens) {
@@ -47,7 +45,7 @@ function delay(ms) {
 }
 
 app.get("/", async (req, res) => {
-  res.send("Hi ,I'm live");
+  res.send("Hi, I'm live");
 });
 
 app.post("/summarize", async (req, res) => {
@@ -73,7 +71,7 @@ app.post("/summarize", async (req, res) => {
     const transcript = transcriptArray.map((item) => item.text).join(" ");
 
     // Split the transcript into chunks
-    const transcriptChunks = splitTranscript(transcript, 300);
+    const transcriptChunks = splitTranscript(transcript, 200);  // Reduce chunk size to 200 words
     const summaries = [];
 
     // Summarize each chunk
@@ -91,7 +89,7 @@ app.post("/summarize", async (req, res) => {
           .status(500)
           .send({ error: "An error occurred during summarization." });
       }
-      await delay(500); // Optional delay to prevent rate limiting
+      await delay(1000); // Increase delay to 1 second
     }
 
     // Combine and re-summarize the summaries
